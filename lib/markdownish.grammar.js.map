@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "markdownish.grammar.js",
+  "sourceRoot": "..",
+  "sources": [
+    "src/markdownish.grammar.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;;AAAA",
+  "sourcesContent": [
+    ""
+  ]
+}

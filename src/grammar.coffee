@@ -3,7 +3,7 @@
 
 ############################################################################################################
 CND                       = require 'cnd'
-badge                     = 'INTERTEXT/GRAMMARS/GRAMMAR'
+badge                     = 'PARAGATE/GRAMMARS/GRAMMAR'
 log                       = CND.get_logger 'plain',     badge
 info                      = CND.get_logger 'info',      badge
 whisper                   = CND.get_logger 'whisper',   badge
@@ -279,7 +279,7 @@ datom_from_token = ( token ) ->
     #.......................................................................................................
     for token_name, description of mode
       description.match = ( -> null ) if description.match is null
-      validate.intertext_parsers_lexer_token_description description
+      validate.paragate_parsers_lexer_token_description description
       target.push new_token token_name, description
   #.........................................................................................................
   return R
@@ -377,8 +377,8 @@ class Grammar extends Multimix
   constructor: ( name, description, settings = null ) ->
     super()
     validate.nonempty_text name
-    # validate.intertext_grammar_description  description
-    # validate.intertext_grammar_settings     settings
+    # validate.paragate_grammar_description  description
+    # validate.paragate_grammar_settings     settings
     defaults        = { parser_start: null, }
     @name           = name
     @description    = description

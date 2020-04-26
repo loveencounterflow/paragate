@@ -7,7 +7,7 @@
 ############################################################################################################
 CND                       = require 'cnd'
 rpr                       = CND.rpr
-badge                     = 'INTERTEXT/PARSERS/TYPES'
+badge                     = 'PARAGATE/PARSERS/TYPES'
 debug                     = CND.get_logger 'debug',     badge
 alert                     = CND.get_logger 'alert',     badge
 whisper                   = CND.get_logger 'whisper',   badge
@@ -23,7 +23,7 @@ intertype                 = new Intertype module.exports
 @declare 'not_given', ( x ) -> ( x is '' ) or ( not x? ) or ( @isa.nan x )
 
 #-----------------------------------------------------------------------------------------------------------
-@declare 'intertext_parsers_lexer_token_matcher',
+@declare 'paragate_parsers_lexer_token_matcher',
   tests:
     "x is a regex, a nonempty_text, or a function": ( x ) ->
       return true if @isa.regex         x
@@ -32,10 +32,10 @@ intertype                 = new Intertype module.exports
       return false
 
 #-----------------------------------------------------------------------------------------------------------
-@declare 'intertext_parsers_lexer_token_description',
+@declare 'paragate_parsers_lexer_token_description',
   tests:
     "x is an object":                             ( x ) -> @isa.object x
-    "x.match is a valid token matcher":           ( x ) -> @isa.intertext_parsers_lexer_token_matcher x.match
+    "x.match is a valid token matcher":           ( x ) -> @isa.paragate_parsers_lexer_token_matcher x.match
     "x.push_mode is an optional nonempty_text":   ( x ) -> ( not x.push_mode?     ) or @isa.nonempty_text x.push_mode
     "x.switch_mode is an optional nonempty_text": ( x ) -> ( not x.switch_mode?   ) or @isa.nonempty_text x.switch_mode
     "x.pop_mode is an optional boolean":          ( x ) -> ( not  x.pop_mode?     ) or @isa.boolean       x.pop_mode

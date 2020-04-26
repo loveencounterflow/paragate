@@ -17,8 +17,7 @@ echo                      = CND.echo.bind CND
 { assign
   jr }                    = CND
 CHVTN                     = require 'chevrotain'
-warn "^34448^ using 'apps/datom' instead of 'datom'"
-DATOM                     = new ( require '../../../apps/datom' ).Datom { dirty: false, }
+DATOM                     = new ( require 'datom' ).Datom { dirty: false, }
 { lets
   freeze }                = DATOM.export()
 types                     = require './types'
@@ -27,8 +26,7 @@ types                     = require './types'
   type_of }               = types
 Multimix                  = require 'multimix'
 MAIN                      = @
-warn "^33098^ should use `require '../..` instead of `../../apps/intertext`"
-INTERTEXT                 = require '../../../apps/intertext'
+INTERTEXT                 = require 'intertext'
 { rpr }                   = INTERTEXT.export()
 is_given                  = ( x ) -> not [ null, undefined, NaN, '', ].includes x
 #-----------------------------------------------------------------------------------------------------------

@@ -184,7 +184,6 @@ match_catchall = ( text, start ) ->
     yield dd { $key: '>document', start: x, stop: x, $vnr: [ Infinity, ], $: '^α6^', }
     return null
   #.........................................................................................................
-  debug '^3332^', ( rpr token_name ), ( rpr tree )
   switch token_name
     #.......................................................................................................
     when 'P_alphanumeric'
@@ -195,7 +194,7 @@ match_catchall = ( text, start ) ->
     #.......................................................................................................
     when 'P_number'
       $key  = '^number'
-      type  = switch tree.ukids.T_sign.text ? '+'
+      type  = switch tree.ukids?.T_sign?.text ? '+'
         when '+' then 'positive'
         when '-' then 'negative'
       yield dd { $key, type, text, start, stop, type, $vnr, $: '^α7^', }

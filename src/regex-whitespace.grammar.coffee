@@ -19,15 +19,15 @@ echo                      = CND.echo.bind CND
 # CHVTN                     = require 'chevrotain'
 { lets
   freeze }                = ( new ( require 'datom' ).Datom { dirty: false, } ).export()
-types                     = require '../paragate/lib/types'
+types                     = require './types'
 { isa
   type_of
   validate }              = types
-GRAMMAR                   = require '../paragate/lib/grammar'
+GRAMMAR                   = require './grammar'
 INTERTEXT                 = require 'intertext'
 { rpr }                   = INTERTEXT.export()
 space_re                  = /\x20+/y
-Multimix                  = require '../paragate/node_modules/multimix'
+Multimix                  = require 'multimix'
 
 
 #-----------------------------------------------------------------------------------------------------------

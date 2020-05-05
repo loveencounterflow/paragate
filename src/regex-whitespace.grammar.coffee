@@ -25,11 +25,44 @@ types                     = require './types'
   type_of
   validate }              = types
 GRAMMAR                   = require './grammar'
-INTERTEXT                 = require 'intertext'
-{ rpr }                   = INTERTEXT.export()
 space_re                  = /\x20+/y
 Multimix                  = require 'multimix'
 
+
+#-----------------------------------------------------------------------------------------------------------
+@$parse = ->
+  SP        = require 'steampipes'
+  linenr    = 0
+  start     = null
+  stop      = 0
+  level     = 0
+  dent      = null
+  nl        = '\n'
+  level     = null
+  first     = Symbol 'first'
+  last      = Symbol 'last'
+  ### TAINT code duplication ###
+  pipeline  = []
+  pipeline.push $dlines_from_lines = SP.$ { first, last, }, ( d, send ) =>
+    if d is first
+      return send { $key: '<document', start, stop, $vnr: [ -Infinity, ], $: '^ρξ1^' }
+    if d is last
+      start = stop
+      return send { $key: '>document', start, stop, $vnr: [ +Infinity, ], $: '^ρξ2^' }
+    unless isa.text d
+      return send d
+    line  = d
+    start = stop
+    stop += line.length + 1 # NOTE: assuming line was terminated with single newline
+    linenr++
+    { dent, text, } = ( line.match @dent_re ).groups
+    level           = dent.length
+    line            = line + '\n'
+    send { $key: '^dline', start, stop, text, dent, line, level, nl, $vnr: [ linenr, 1, ], $: '^ρξ3^', }
+    return null
+  # if @as_blocks
+  pipeline.push $freeze = SP.$ ( d, send ) => send freeze d
+  return SP.pull pipeline...
 
 #-----------------------------------------------------------------------------------------------------------
 @parse = ( source ) ->
@@ -42,7 +75,8 @@ Multimix                  = require 'multimix'
   #.........................................................................................................
   start = 0
   stop  = source.length
-  R.push { $key: '<document', start, stop, source, $vnr: [ -Infinity, ], $: '^r1^' }
+  R.push { $key: '<document', start, stop, source, $vnr: [ -Infinity, ], $: '^ρξ4^' }
+  ### TAINT code duplication ###
   for idx in [ 0 .. lines.length ] by 2
     line            = lines[ idx     ]
     nl              = lines[ idx + 1 ] ? ''
@@ -51,10 +85,10 @@ Multimix                  = require 'multimix'
     { dent, text, } = ( line.match @dent_re ).groups
     level           = dent.length
     line           += nl
-    R.push { $key: '^dline', start, stop, dent, text, nl, line, level, $vnr: [ linenr, colnr ], $: '^r2^' }
+    R.push { $key: '^dline', start, stop, dent, text, nl, line, level, $vnr: [ linenr, colnr ], $: '^ρξ5^' }
     start           = stop
   start = stop = source.length
-  R.push { $key: '>document', start, stop, $vnr: [ +Infinity, ], $: '^r3^' }
+  R.push { $key: '>document', start, stop, $vnr: [ +Infinity, ], $: '^ρξ6^' }
   #.........................................................................................................
   return freeze if @as_blocks then ( @_as_blocks R ) else R
 
@@ -76,7 +110,7 @@ Multimix                  = require 'multimix'
     # debug '^223^', rpr buffer
     if $key is '^block' then  text  = ( (          d.text + d.nl ) for d in buffer ).join ''
     else                      text  = ( ( d.dent + d.text + d.nl ) for d in buffer ).join ''
-    return { $key, start, stop, text, level, linecount, $vnr, $: '^r4^', }
+    return { $key, start, stop, text, level, linecount, $vnr, $: '^ρξ7^', }
   #.........................................................................................................
   flush = ( $key, collection ) ->
     return collection unless collection.length > 0

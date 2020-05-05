@@ -16,6 +16,11 @@
   > document. Instead of writing `<title>My page</title>`, you could simply write `<title/My page/` to
   > accomplish the same thing.—http://www.webdevout.net/articles/beware-of-xhtml#net
 
+  Consider to
+    * prefer `<tag/content/>` over `<tag/content/` because then pointy brackets remain balanced
+    * allow to use several slashes or other punctuation to make it possible for any content to appear
+      without escapes, e.g. instead of `<url/https:\/\/en.wikipedia.org\/wiki\//>` one could write
+      `<url°°°https://en.wikipedia.org/wiki\/°°°>`.
 
 * https://twitter.com/swyx/status/1241011813766107139
 

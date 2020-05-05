@@ -17,3 +17,17 @@
   > accomplish the same thing.—http://www.webdevout.net/articles/beware-of-xhtml#net
 
 
+* https://twitter.com/swyx/status/1241011813766107139
+
+  >
+  > I like Pandoc’s extensions: https://pandoc.org/MANUAL.html
+  >
+  > ```
+  > # Heading {#id}
+  >
+  > ::: {.class-for-div}
+  > abc
+  > :::
+  >
+  > ```
+

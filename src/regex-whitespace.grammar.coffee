@@ -129,8 +129,8 @@ class Rxws_grammar extends Multimix
     return @
 
 
-rxws_grammar    = new Rxws_grammar()
-module.exports  = { rxws_grammar, Rxws_grammar, }
+############################################################################################################
+module.exports = { Rxws_grammar, grammar: new Rxws_grammar(), }
 
 
 

@@ -3,6 +3,7 @@
 
 ############################################################################################################
 CND                       = require 'cnd'
+rpr                       = CND.rpr
 badge                     = 'PARAGATE/GRAMMARS/GRAMMAR'
 log                       = CND.get_logger 'plain',     badge
 info                      = CND.get_logger 'info',      badge
@@ -26,8 +27,6 @@ types                     = require './types'
   type_of }               = types
 Multimix                  = require 'multimix'
 MAIN                      = @
-INTERTEXT                 = require 'intertext'
-{ rpr }                   = INTERTEXT.export()
 is_given                  = ( x ) -> not [ null, undefined, NaN, '', ].includes x
 #-----------------------------------------------------------------------------------------------------------
 ### thx to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name ###

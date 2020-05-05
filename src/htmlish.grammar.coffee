@@ -4,6 +4,7 @@
 ############################################################################################################
 CND                       = require 'cnd'
 badge                     = 'PARAGATE/GRAMMARS/HTMLISH'
+rpr                       = CND.rpr
 log                       = CND.get_logger 'plain',     badge
 info                      = CND.get_logger 'info',      badge
 whisper                   = CND.get_logger 'whisper',   badge
@@ -24,8 +25,6 @@ types                     = require './types'
   type_of
   validate }              = types
 GRAMMAR                   = require './grammar'
-INTERTEXT                 = require 'intertext'
-{ rpr }                   = INTERTEXT.export()
 
 
 #===========================================================================================================

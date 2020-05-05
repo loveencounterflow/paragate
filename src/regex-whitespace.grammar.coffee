@@ -4,6 +4,7 @@
 ############################################################################################################
 CND                       = require 'cnd'
 badge                     = 'PARAGATE/GRAMMARS/REGEXWS'
+rpr                       = CND.rpr
 log                       = CND.get_logger 'plain',     badge
 info                      = CND.get_logger 'info',      badge
 whisper                   = CND.get_logger 'whisper',   badge

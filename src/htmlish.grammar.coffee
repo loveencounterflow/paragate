@@ -183,12 +183,12 @@ dd = ( d ) ->
   return null
 
 
-#===========================================================================================================
-#
-#-----------------------------------------------------------------------------------------------------------
-### TAINT use object for exports ###
-module.exports = GRAMMAR.new_grammar 'Htmlish', @
 
+############################################################################################################
+### TAINT this seems backwards (but works?) ###
+grammar         = GRAMMAR.new_grammar 'Htmlish', @
+Htmlish_grammar = grammar.constructor
+module.exports  = { Htmlish_grammar, grammar, }
 
 
 

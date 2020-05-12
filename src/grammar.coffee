@@ -178,8 +178,8 @@ vnr_from_parser_error = ( error ) ->
   for key in [ 'token', 'previousToken', ]
     token = error[ key ]
     break if ( R = token?.$vnr )?
-    if ( is_given line_nr = token.startLine ) and ( is_given col_nr = token.startColumn )
-      R = [ line_nr, col_nr, ]
+    if ( is_given linenr = token.startLine ) and ( is_given colnr = token.startColumn )
+      R = [ linenr, colnr, ]
       break
   return R
 

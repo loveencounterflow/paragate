@@ -18,7 +18,8 @@ echo                      = CND.echo.bind CND
 { assign
   jr }                    = CND
 # CHVTN                     = require 'chevrotain'
-{ lets
+{ new_datom
+  lets
   freeze }                = ( new ( require 'datom' ).Datom { dirty: false, } ).export()
 types                     = require './types'
 { isa
@@ -185,6 +186,18 @@ dd = ( d ) ->
   return null
 
 
+#-----------------------------------------------------------------------------------------------------------
+$parse = ( grammar = null ) ->
+  SP        = require 'steampipes'
+  grammar  ?= new new_grammar { bare: true, }
+  line_nr   = 0
+  return SP.$ ( line, send ) ->
+    line_nr++
+    send new_datom '^newline', { line_nr, }
+    for d in grammar.parse line
+      send lets d, ( d ) -> d.$vnr[ 0 ] = line_nr
+    return null
+
 
 ############################################################################################################
 ### TAINT this seems backwards (but works?) ###
@@ -192,7 +205,7 @@ MAIN            = @
 new_grammar     = ( settings ) -> GRAMMAR.new_grammar 'Htmlish', MAIN, settings
 grammar         = new_grammar()
 Htmlish_grammar = grammar.constructor
-module.exports  = { Htmlish_grammar, grammar, new_grammar, }
+module.exports  = { Htmlish_grammar, grammar, new_grammar, $parse, }
 
 
 

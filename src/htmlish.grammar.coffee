@@ -193,7 +193,7 @@ $parse = ( grammar = null ) ->
   line_nr   = 0
   return SP.$ ( line, send ) ->
     line_nr++
-    send new_datom '^newline', { line_nr, }
+    send new_datom '^newline', { $vnr: [ line_nr, 0, ], $: '^ѱ16^', }
     for d in grammar.parse line
       send lets d, ( d ) -> d.$vnr[ 0 ] = line_nr
     return null

@@ -186,9 +186,11 @@ dd = ( d ) ->
 
 ############################################################################################################
 ### TAINT this seems backwards (but works?) ###
-grammar         = GRAMMAR.new_grammar 'Htmlish', @
+MAIN            = @
+new_grammar     = ( settings ) -> GRAMMAR.new_grammar 'Htmlish', MAIN, settings
+grammar         = new_grammar()
 Htmlish_grammar = grammar.constructor
-module.exports  = { Htmlish_grammar, grammar, }
+module.exports  = { Htmlish_grammar, grammar, new_grammar, }
 
 
 

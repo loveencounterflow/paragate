@@ -151,11 +151,13 @@ dd = ( d ) ->
     break
   #.........................................................................................................
   if $key is '^document'
-    yield dd { $key: '<document', start: 0, stop: 0, source, errors: tree.errors, $vnr: [ -Infinity, ], $: '^ѱ10^', }
+    unless @settings.bare
+      yield dd { $key: '<document', start: 0, stop: 0, source, errors: tree.errors, $vnr: [ -Infinity, ], $: '^ѱ10^', }
     for subtree in tree.kids
       yield from @linearize source, subtree, level + 1
     x = text.length
-    yield dd { $key: '>document', start: x, stop: x, $vnr: [ Infinity, ], $: '^ѱ11^', }
+    unless @settings.bare
+      yield dd { $key: '>document', start: x, stop: x, $vnr: [ Infinity, ], $: '^ѱ11^', }
     return null
   #.........................................................................................................
   return null unless ( name = tree.ukids?.i_name?.text )? ### may happen when parsing errors occur ###

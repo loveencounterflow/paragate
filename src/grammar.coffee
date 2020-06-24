@@ -376,7 +376,7 @@ class Grammar extends Multimix
     validate.nonempty_text name
     # validate.paragate_grammar_description  description
     # validate.paragate_grammar_settings     settings
-    defaults        = { parser_start: null, }
+    defaults        = { parser_start: null, bare: false, }
     @name           = name
     @description    = description
     @settings       = { defaults..., settings..., }

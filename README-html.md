@@ -1,22 +1,25 @@
 
-## InterText HTML: Parse and Generate HTML5
+## Paragate HTMLish: Parsing of HTML5
+
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [API Overview](#api-overview)
-- [General Considerations](#general-considerations)
-- [HTML Parsing](#html-parsing)
-- [HTML Generation](#html-generation)
-  - [HTML Generation from Datoms](#html-generation-from-datoms)
-  - [HTML Generation from Method Calls](#html-generation-from-method-calls)
-- [Example: HTML Parsing and HTML Generation](#example-html-parsing-and-html-generation)
-- [Remarks](#remarks)
+- [Paragate HTMLish: Parsing of HTML5](#paragate-htmlish-parsing-of-html5)
+  - [API Overview](#api-overview)
+  - [General Considerations](#general-considerations)
+  - [HTML Parsing](#html-parsing)
+  - [HTML Generation](#html-generation)
+    - [HTML Generation from Datoms](#html-generation-from-datoms)
+    - [HTML Generation from Method Calls](#html-generation-from-method-calls)
+  - [Example: HTML Parsing and HTML Generation](#example-html-parsing-and-html-generation)
+  - [Remarks](#remarks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Paragate HTMLish: Parsing of HTML5
 
 ### API Overview
 

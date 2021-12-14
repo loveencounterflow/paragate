@@ -175,9 +175,29 @@ dd = ( d ) ->
           k         = attribute.ukids.i_name.text
           v         = attribute.ukids.v_value?.text ? true
           atrs[ k ] = v
-        yield dd { $key, name, type, text, start, stop, atrs, $vnr, $: '^ѱ12^', }
+        d = { $key, name, type, text, start, stop, atrs, $vnr, $: '^ѱ12^', }
       else
-        yield dd { $key, name, type, text, start, stop, $vnr, $: '^ѱ13^', }
+        d = { $key, name, type, text, start, stop, $vnr, $: '^ѱ13^', }
+      #.....................................................................................................
+      # parse compact tag name:
+      if d.name? and d.name isnt ''
+        e = @_parse_compact_tagname d.name, true
+        if e.id?
+          if d.id?
+            throw new Error "^paragate/htmlish/linearize@1^ duplicate IDs in #{rpr d}"
+          d.id = e.id
+        if e.prefix?
+          if d.prefix?
+            throw new Error "^paragate/htmlish/linearize@1^ duplicate prefixes in #{rpr d}"
+          d.prefix = e.prefix
+        if e.class?
+          clasz = if d.class? then ( new Set d.class.split /\s+/ ) else ( new Set() )
+          clasz.add c for c in e.class
+          d.class = [ clasz..., ]
+        if e.name?
+          d.name = e.name
+      #.....................................................................................................
+      yield dd d
     #.......................................................................................................
     when 'ctag'
       yield dd { $key: '>tag', name, type: 'ctag', text, start, stop, $vnr, $: '^ѱ14^', }
@@ -197,6 +217,29 @@ $parse = ( grammar = null ) ->
     for d in grammar.parse line
       send lets d, ( d ) -> d.$vnr[ 0 ] = line_nr
     return null
+
+#-----------------------------------------------------------------------------------------------------------
+@_parse_compact_tagname = ( compact_tagname, strict = false ) ->
+  pattern = ///
+    (?<prefix>[^\s.:#]+(?=:)) |
+    (?<id>(?<=#)[^\s.:#]+) |
+    (?<class>(?<=\.)[^\s.:#]+) |
+    (?<name>[^\s.:#]+)
+    ///ug
+  # pattern = /(?<prefix>[^\s.:#]+(?=:))|(?<id>(?<=#)[^\s.:#]+)|(?<class>(?<=\.)[^\s.:#]+)|(?<name>[^\s.:#]+)/ug
+  R = {}
+  for { groups, } from compact_tagname.matchAll pattern
+    for k, v of groups
+      continue if ( not v? ) or ( v is '' )
+      if k is 'class'
+        ( R.class ?= [] ).push v
+      else
+        if ( target = R[ k ] )?
+          throw new Error "^paragate/htmlish/_parse_compact_tagname@5584^ found duplicate values for #{rpr k}: #{rpr target}, #{rpr v}"
+        R[ k ] = v
+  if strict and not R.name?
+    throw new Error "^paragate/htmlish/_parse_compact_tagname@1^ illegal compact tag syntax in #{rpr compact_tagname}"
+  return R
 
 
 ############################################################################################################

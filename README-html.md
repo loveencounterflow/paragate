@@ -16,6 +16,7 @@
     - [HTML Generation from Method Calls](#html-generation-from-method-calls)
   - [Example: HTML Parsing and HTML Generation](#example-html-parsing-and-html-generation)
   - [Remarks](#remarks)
+  - [To Do](#to-do)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -260,4 +261,9 @@ a future version.
 
 ### Remarks
 
+
+### To Do
+
+* **[–]** Parser throws (some) errors on some conditions, but it should issue error codes (with location
+  info) instead.
 

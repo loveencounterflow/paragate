@@ -27,7 +27,7 @@
     "chevrotain": "^7.0.1",
     "cnd": "^9.0.0",
     "datom": "^7.0.1",
-    "intertext": "^5.0.0",
+    "intertext": "8.0.0",
     "intertype": "^7.0.2",
     "multimix": "^4.1.0",
     "steampipes": "^6.3.0"

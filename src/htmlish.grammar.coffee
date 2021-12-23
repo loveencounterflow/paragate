@@ -26,6 +26,7 @@ types                     = require './types'
   type_of
   validate }              = types
 GRAMMAR                   = require './grammar'
+{ HTMLISH: PGTH }         = require 'intertext'
 
 
 #===========================================================================================================
@@ -181,7 +182,7 @@ dd = ( d ) ->
       #.....................................................................................................
       # parse compact tag name:
       if d.name? and d.name isnt ''
-        e = @_parse_compact_tagname d.name, true
+        e = PGTH.parse_compact_tagname d.name, true
         if e.id?
           if d.id?
             throw new Error "^paragate/htmlish/linearize@1^ duplicate IDs in #{rpr d}"
@@ -217,29 +218,6 @@ $parse = ( grammar = null ) ->
     for d in grammar.parse line
       send lets d, ( d ) -> d.$vnr[ 0 ] = line_nr
     return null
-
-#-----------------------------------------------------------------------------------------------------------
-@_parse_compact_tagname = ( compact_tagname, strict = false ) ->
-  pattern = ///
-    (?<prefix>[^\s.:#]+(?=:)) |
-    (?<id>(?<=#)[^\s.:#]+) |
-    (?<class>(?<=\.)[^\s.:#]+) |
-    (?<name>[^\s.:#]+)
-    ///ug
-  # pattern = /(?<prefix>[^\s.:#]+(?=:))|(?<id>(?<=#)[^\s.:#]+)|(?<class>(?<=\.)[^\s.:#]+)|(?<name>[^\s.:#]+)/ug
-  R = {}
-  for { groups, } from compact_tagname.matchAll pattern
-    for k, v of groups
-      continue if ( not v? ) or ( v is '' )
-      if k is 'class'
-        ( R.class ?= [] ).push v
-      else
-        if ( target = R[ k ] )?
-          throw new Error "^paragate/htmlish/_parse_compact_tagname@5584^ found duplicate values for #{rpr k}: #{rpr target}, #{rpr v}"
-        R[ k ] = v
-  if strict and not R.name?
-    throw new Error "^paragate/htmlish/_parse_compact_tagname@1^ illegal compact tag syntax in #{rpr compact_tagname}"
-  return R
 
 
 ############################################################################################################

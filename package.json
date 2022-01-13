@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/loveencounterflow/paragate#readme",
   "dependencies": {
-    "chevrotain": "^7.0.1",
+    "chevrotain": "9.1.0",
     "cnd": "^9.0.0",
-    "datom": "^7.0.1",
+    "datom": "8.0.3",
     "intertext": "8.0.0",
     "intertype": "^7.0.2",
-    "multimix": "^4.1.0",
+    "multimix": "5.0.0",
     "steampipes": "^6.3.0"
   }
 }

@@ -130,22 +130,22 @@ dd = ( d ) ->
   #.........................................................................................................
   if $key is '^token'
     switch token_name
-      when 'o_escaped'            then  yield dd { $key: '^text',                start, stop, text, $vnr, $: '^ѱ1^', }
-      when 'o_text', 'stm_text'   then  yield dd { $key: '^text',                start, stop, text, $vnr, $: '^ѱ1^', }
-      when 'stm_slash2'           then  yield dd { $key: '>tag', type: 'nctag',  start, stop, text, $vnr, $: '^ѱ2^', }
-      when 'o_comment'            then  yield dd { $key: '^comment',             start, stop, text, $vnr, $: '^ѱ3^', }
-      when 'o_pi'                 then  yield dd { $key: '^pi',                  start, stop, text, $vnr, $: '^ѱ4^', }
-      when 'o_doctype'            then  yield dd { $key: '^doctype',             start, stop, text, $vnr, $: '^ѱ5^', }
+      when 'o_escaped'            then  yield dd { $key: '^text',                start, stop, text, $vnr, $: '^Ω1^', }
+      when 'o_text', 'stm_text'   then  yield dd { $key: '^text',                start, stop, text, $vnr, $: '^Ω2^', }
+      when 'stm_slash2'           then  yield dd { $key: '>tag', type: 'nctag',  start, stop, text, $vnr, $: '^Ω3^', }
+      when 'o_comment'            then  yield dd { $key: '^comment',             start, stop, text, $vnr, $: '^Ω4^', }
+      when 'o_pi'                 then  yield dd { $key: '^pi',                  start, stop, text, $vnr, $: '^Ω5^', }
+      when 'o_doctype'            then  yield dd { $key: '^doctype',             start, stop, text, $vnr, $: '^Ω6^', }
       when 'o_cdata'
         start1  = start + 9
         stop2   = stop  - 3
         text1   = source[ start   ... start1  ]
         text2   = source[ start1  ... stop2   ]
         text3   = source[ stop2   ... stop    ]
-        yield dd { $key: '<cdata', start,          stop: start1, text: text1, $vnr, $: '^ѱ6^', }
-        yield dd { $key: '^text',  start: start1,  stop: stop2,  text: text2, $vnr, $: '^ѱ7^', } if text2 isnt ''
-        yield dd { $key: '>cdata', start: stop2,   stop,         text: text3, $vnr, $: '^ѱ8^', }
-      else yield dd { $key: '^unknown', $value: tree, $vnr, $: '^ѱ9^', }
+        yield dd { $key: '<cdata', start,          stop: start1, text: text1, $vnr, $: '^Ω7^', }
+        yield dd { $key: '^text',  start: start1,  stop: stop2,  text: text2, $vnr, $: '^Ω8^', } if text2 isnt ''
+        yield dd { $key: '>cdata', start: stop2,   stop,         text: text3, $vnr, $: '^Ω9^', }
+      else yield dd { $key: '^unknown', $value: tree, $vnr, $: '^Ω10^', }
     return null
   throw new Error "^445^ unknown $key #{rpr $key}" unless $key in [ '^document', '^node', ]
   #.........................................................................................................
@@ -157,12 +157,12 @@ dd = ( d ) ->
   #.........................................................................................................
   if $key is '^document'
     unless @settings.bare
-      yield dd { $key: '<document', start: 0, stop: 0, source, errors: tree.errors, $vnr: [ -Infinity, ], $: '^ѱ10^', }
+      yield dd { $key: '<document', start: 0, stop: 0, source, errors: tree.errors, $vnr: [ -Infinity, ], $: '^Ω11^', }
     for subtree in tree.kids
       yield from @linearize source, subtree, level + 1
     x = text.length
     unless @settings.bare
-      yield dd { $key: '>document', start: x, stop: x, $vnr: [ Infinity, ], $: '^ѱ11^', }
+      yield dd { $key: '>document', start: x, stop: x, $vnr: [ Infinity, ], $: '^Ω12^', }
     return null
   #.........................................................................................................
   return null unless ( name = tree.ukids?.i_name?.text )? ### may happen when parsing errors occur ###
@@ -179,9 +179,9 @@ dd = ( d ) ->
           k         = attribute.ukids.i_name.text
           v         = attribute.ukids.v_value?.text ? true
           atrs[ k ] = v
-        d = { $key, name, type, text, start, stop, atrs, $vnr, $: '^ѱ12^', }
+        d = { $key, name, type, text, start, stop, atrs, $vnr, $: '^Ω13^', }
       else
-        d = { $key, name, type, text, start, stop, $vnr, $: '^ѱ13^', }
+        d = { $key, name, type, text, start, stop, $vnr, $: '^Ω14^', }
       #.....................................................................................................
       # parse compact tag name:
       if d.name? and d.name isnt ''
@@ -204,9 +204,9 @@ dd = ( d ) ->
       yield dd d
     #.......................................................................................................
     when 'ctag'
-      yield dd { $key: '>tag', name, type: 'ctag', text, start, stop, $vnr, $: '^ѱ14^', }
+      yield dd { $key: '>tag', name, type: 'ctag', text, start, stop, $vnr, $: '^Ω15^', }
     #.......................................................................................................
-    else yield dd { $key: '^unknown', $value: tree, $vnr, $: '^ѱ15^', }
+    else yield dd { $key: '^unknown', $value: tree, $vnr, $: '^Ω16^', }
   return null
 
 #-----------------------------------------------------------------------------------------------------------
@@ -219,21 +219,21 @@ $parse = ( grammar = null ) ->
   line_nr   = 0
   return SP.$ ( line, send ) ->
     line_nr++
-    send new_datom '^newline', { $vnr: [ line_nr, 0, ], $: '^ѱ16^', }
+    send new_datom '^newline', { $vnr: [ line_nr, 0, ], $: '^Ω17^', }
     for d in grammar.parse line
       send lets d, ( d ) -> d.$vnr[ 0 ] = line_nr
     return null
 
 #-----------------------------------------------------------------------------------------------------------
 merge_texts = ( d1, d2 ) ->
-  # { '$key': '^text', start: 0, stop: 7, text: 'before ', '$vnr': [ 1, 1 ], '$': '^ѱ1^' }
+  # { '$key': '^text', start: 0, stop: 7, text: 'before ', '$vnr': [ 1, 1 ], '$': '^Ω18^' }
   R =
     $key:   '^text'
     start:  d1.start
     stop:   d2.stop
     text:   d1.text + d2.text
     $vnr:   d1.$vnr
-    $:      d1.$[ ... d1.$.length - 1 ] + d2.$ + 'ð1^'
+    $:      d1.$[ ... d1.$.length - 1 ] + d2.$ + 'Ω19^'
   return R
 
 #-----------------------------------------------------------------------------------------------------------

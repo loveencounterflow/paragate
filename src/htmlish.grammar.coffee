@@ -35,6 +35,7 @@ GRAMMAR                   = require './grammar'
 @lexer_modes =
   #.........................................................................................................
   outside_mode:
+    o_escaped:        { match: /\\./u,                                                          }
     o_comment:        { match: /<!--[\s\S]*?-->/,                 line_breaks: true,            }
     o_cdata:          { match: /<!\[CDATA\[[\s\S]*?]]>/,                                        }
     o_doctype:        { match: /<!DOCTYPE\s+[^>]*>/,                                            }
@@ -42,7 +43,7 @@ GRAMMAR                   = require './grammar'
     o_pi:             { match: /<\?[\s\S]*?\?>/,                                                }
     i_slash_open:     { match: /<\//,                             push_mode: "inside_mode",     }
     i_open:           { match: /</,                               push_mode: "inside_mode",     }
-    o_text:           { match: /[^<]+/,                                                         }
+    o_text:           { match: /[^<\\]+/,                                                       }
   #.........................................................................................................
   inside_mode:
     i_close:          { match: />/,                               pop_mode: true,               }
@@ -68,6 +69,7 @@ GRAMMAR                   = require './grammar'
   @RULE 'document', =>
     @MANY =>
       @OR [
+        { ALT: => @CONSUME t.o_escaped    }
         { ALT: => @CONSUME t.o_doctype    }
         { ALT: => @CONSUME t.o_xmldecl    }
         { ALT: => @CONSUME t.o_pi         }
@@ -128,6 +130,7 @@ dd = ( d ) ->
   #.........................................................................................................
   if $key is '^token'
     switch token_name
+      when 'o_escaped'            then  yield dd { $key: '^text',                start, stop, text, $vnr, $: '^ѱ1^', }
       when 'o_text', 'stm_text'   then  yield dd { $key: '^text',                start, stop, text, $vnr, $: '^ѱ1^', }
       when 'stm_slash2'           then  yield dd { $key: '>tag', type: 'nctag',  start, stop, text, $vnr, $: '^ѱ2^', }
       when 'o_comment'            then  yield dd { $key: '^comment',             start, stop, text, $vnr, $: '^ѱ3^', }
@@ -221,11 +224,46 @@ $parse = ( grammar = null ) ->
       send lets d, ( d ) -> d.$vnr[ 0 ] = line_nr
     return null
 
+#-----------------------------------------------------------------------------------------------------------
+merge_texts = ( d1, d2 ) ->
+  # { '$key': '^text', start: 0, stop: 7, text: 'before ', '$vnr': [ 1, 1 ], '$': '^ѱ1^' }
+  R =
+    $key:   '^text'
+    start:  d1.start
+    stop:   d2.stop
+    text:   d1.text + d2.text
+    $vnr:   d1.$vnr
+    $:      d1.$[ ... d1.$.length - 1 ] + d2.$ + 'ð1^'
+  return R
+
+#-----------------------------------------------------------------------------------------------------------
+parse = ( P... ) ->
+  tokens  = @_parse P...
+  R       = []
+  prv_d   = null
+  for d, idx in tokens
+    if ( d.$key is '^text' )
+      if ( prv_d? ) and ( prv_d.$key is '^text' )
+        prv_d = merge_texts prv_d, d
+        continue
+      prv_d = d
+      continue
+    R.push prv_d if prv_d
+    prv_d = null
+    R.push d
+  R.push prv_d if prv_d?
+  return freeze R
+
 
 ############################################################################################################
 ### TAINT this seems backwards (but works?) ###
 MAIN            = @
-new_grammar     = ( settings ) -> GRAMMAR.new_grammar 'Htmlish', MAIN, settings
+new_grammar     = ( settings ) ->
+  R         = GRAMMAR.new_grammar 'Htmlish', MAIN, settings
+  R._parse  = R.parse
+  R.parse   = parse
+  return R
+
 grammar         = new_grammar()
 Htmlish_grammar = grammar.constructor
 module.exports  = { Htmlish_grammar, grammar, new_grammar, $parse, }

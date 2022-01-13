@@ -182,7 +182,7 @@ dd = ( d ) ->
       #.....................................................................................................
       # parse compact tag name:
       if d.name? and d.name isnt ''
-        e = PGTH.parse_compact_tagname d.name, true
+        e = @_parse_compact_tagname d.name
         if e.id?
           if d.id?
             throw new Error "^paragate/htmlish/linearize@1^ duplicate IDs in #{rpr d}"
@@ -206,6 +206,8 @@ dd = ( d ) ->
     else yield dd { $key: '^unknown', $value: tree, $vnr, $: '^ѱ15^', }
   return null
 
+#-----------------------------------------------------------------------------------------------------------
+@_parse_compact_tagname = ( text ) -> PGTH.parse_compact_tagname text, true
 
 #-----------------------------------------------------------------------------------------------------------
 $parse = ( grammar = null ) ->

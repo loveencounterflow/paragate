@@ -1,6 +1,6 @@
 {
   "name": "paragate",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "fast parsers based on Chevrotain",
   "main": "lib/main.js",
   "scripts": {

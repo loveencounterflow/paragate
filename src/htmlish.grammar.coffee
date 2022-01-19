@@ -118,6 +118,13 @@ dd = ( d ) ->
   return d
 
 #-----------------------------------------------------------------------------------------------------------
+strip_quotes = ( x ) ->
+  return x unless isa.text x
+  return x[ 1 ... x.length - 1 ] if /^".*"$/.test x
+  return x[ 1 ... x.length - 1 ] if /^'.*'$/.test x
+  return x
+
+#-----------------------------------------------------------------------------------------------------------
 @linearize = ( source, tree, level = 0 ) ->
   return null unless tree?
   #.........................................................................................................
@@ -177,7 +184,7 @@ dd = ( d ) ->
         atrs = {}
         for attribute in attributes.kids
           k         = attribute.ukids.i_name.text
-          v         = attribute.ukids.v_value?.text ? true
+          v         = strip_quotes attribute.ukids.v_value?.text ? true
           atrs[ k ] = v
         d = { $key, name, type, text, start, stop, atrs, $vnr, $: '^Ω13^', }
       else

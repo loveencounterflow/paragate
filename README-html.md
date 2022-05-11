@@ -266,4 +266,6 @@ a future version.
 
 * **[–]** Parser throws (some) errors on some conditions, but it should issue error codes (with location
   info) instead.
+* **[–]** use `parse_compact_tagname()` implementation from
+  [HDML](https://github.com/loveencounterflow/hdml)
 
